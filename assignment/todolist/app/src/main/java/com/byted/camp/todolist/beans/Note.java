@@ -1,5 +1,7 @@
 package com.byted.camp.todolist.beans;
 
+import android.arch.persistence.room.Entity;
+
 import java.util.Date;
 
 /**
@@ -13,6 +15,7 @@ public class Note {
     private Date date;
     private State state;
     private String content;
+    private int level;
 
     public Note(long id) {
         this.id = id;
@@ -40,5 +43,13 @@ public class Note {
 
     public void setContent(String content) {
         this.content = content;
+    }
+
+    public void setLevel(int level) {
+        this.level = level;
+    }
+
+    public int getLevel() {
+        return level;
     }
 }
