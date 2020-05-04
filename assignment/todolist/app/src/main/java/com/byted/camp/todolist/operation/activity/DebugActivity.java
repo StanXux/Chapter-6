@@ -68,17 +68,59 @@ public class DebugActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // TODO 把一段文本写入某个存储区的文件中，再读出来，显示在 fileText 上
+                //外部公有存储
+                fileText.setText("");
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
                         File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS);
-                        File file = new File(dir, "test");
+                        File file = new File(dir, "test_external_public");
                         FileUtils.writeContentToFile(file, "#title \ntest content.");
                         final List<String> contents = FileUtils.readContentFromFile(file);
                         DebugActivity.this.runOnUiThread(new Runnable() {
                             @Override
                             public void run() {
-                                fileText.setText("");
+                                fileText.append("\nExternal Public\n");
+                                for (String content : contents) {
+                                    fileText.append(content + "\n");
+                                }
+                            }
+                        });
+                    }
+                }).start();
+
+                //外部私有存储
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File dir = getApplicationContext().getExternalFilesDir(Environment.DIRECTORY_DOWNLOADS);
+                        File file = new File(dir, "test_external_private");
+                        FileUtils.writeContentToFile(file, "#title \ntest content.");
+                        final List<String> contents = FileUtils.readContentFromFile(file);
+                        DebugActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fileText.append("\nExternal Private\n");
+                                for (String content : contents) {
+                                    fileText.append(content + "\n");
+                                }
+                            }
+                        });
+                    }
+                }).start();
+
+                //内部存储
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        File dir = getApplicationContext().getFilesDir();
+                        File file = new File(dir, "test_internal");
+                        FileUtils.writeContentToFile(file, "#title \ntest content.");
+                        final List<String> contents = FileUtils.readContentFromFile(file);
+                        DebugActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                fileText.append("\nInternal\n");
                                 for (String content : contents) {
                                     fileText.append(content + "\n");
                                 }
