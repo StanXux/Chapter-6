@@ -2,6 +2,7 @@ package com.byted.camp.todolist.ui;
 
 import android.graphics.Color;
 import android.graphics.Paint;
+import android.support.annotation.ColorRes;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
@@ -47,6 +48,19 @@ public class NoteViewHolder extends RecyclerView.ViewHolder {
     public void bind(final Note note) {
         contentText.setText(note.getContent());
         dateText.setText(SIMPLE_DATE_FORMAT.format(note.getDate()));
+
+        switch (note.getLevel())
+        {
+            case 2:
+                itemView.setBackgroundColor(Color.GREEN);
+                break;
+            case 3:
+                itemView.setBackgroundColor(Color.RED);
+                break;
+            default:
+                itemView.setBackgroundColor(Color.WHITE);
+                break;
+        }
 
         checkBox.setOnCheckedChangeListener(null);
         checkBox.setChecked(note.getState() == State.DONE);
